@@ -71,12 +71,12 @@ curl -X POST http://localhost:8082/development/api/films \
     -H "Content-Type: application/json" \
     -d
 {
-    "director": "Jean Alessi Reynoso Mena",
+    "director": "Pepito el escamoso",
     "episode_id": 4,
     "opening_crawl": "It is a period of civil war...",
-    "producer": "William S.",
+    "producer": "cr7",
     "release_date": "Now",
-    "title": "El retorno infinito",
+    "title": "El partido",
     "people": 1
 }
 
@@ -84,12 +84,12 @@ curl -X POST http://localhost:8082/development/api/films \
     -H "Content-Type: application/json" \
     -d
 {
-    "director": "Jean Alessi Reynoso Mena",
+    "director": "Gringo atrasador",
     "episode_id": 4,
     "opening_crawl": "It is a period of civil war...",
-    "producer": "William S.",
+    "producer": "Joel",
     "release_date": "Now",
-    "title": "El retorno infinito",
+    "title": "el rap ",
     "people": [1, 2, 3]
 }
 ```
