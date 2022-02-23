@@ -1,10 +1,8 @@
 # Star War API
 
-¡Bienvenido a swapi (extended), la API de Star Wars!.
-
 ### Installation 
 
-Instale módulos npm.
+Instale módulos npm en terminal (shell / sh).
 
 ```sh
 npm install
@@ -12,15 +10,17 @@ npm install
 
 ### Setup Environment
 
-Realice una copia del archivo de variables de entorno `(env.example.yml)` y configure las variables correspondientes.
+Realice una copia del archivo de variables de entorno `(.env.example.yml)` y configure las variables correspondientes.
 Considere *NODE_ENV* con el valor *"development"* `(Por defecto tendrá este valor)`.
 
 ```sh
-cp env.example.yml .env.yml
+cp .env.example.yml .env.yml
 ```
+archivo yml estructura
+
 ```yaml
 development:
-  DB_USERNAME: ""
+  DB_USERNAME: "" 
   DB_PASSWORD: ""
   DB_DATABASE: ""
   DB_PORT: 3306
@@ -29,52 +29,42 @@ development:
   SWAPI_URL: "https://swapi.py4e.com/api/"
 ```
 Será necesario crear una base de datos.
+si usas mac configurar el mysql 
+en caso no lo tengas instalado:  brew install mysql y luego para levantar y cerrar
+si deseas configurar user y password:  mysql -u -root
+mysql.server start
+mysqld stop / exit
 
 ```sql
-CREATE DATABASE starwar;
+CREATE DATABASE starwars;
 ```
-
-### Integration with [SWAPI](https://swapi.py4e.com/documentation)
-
-Dada la arquitectura señalada en el reto, será necesario especiar un API para la integración. Este endpoint podrá especificarse en la variable de entorno *SWAPI_URL* del archivo de configuración `.env.yml`. El que usaremos en este proyecto será `https://swapi.py4e.com/api/`
-
-![Arquitectura](https://i.ibb.co/nbdHq5C/arquitectura.jpg)
-
 ### Migrations
 
-Ejecute las migraciones para la creación de tablas. Estas serán creadas en la base de datos especificada en el archivo *.env.yml* `(DB_DATABASE)`
+Ejecute migraciones *.env.yml* `(DB_DATABASE)`
 
 ```sh
 npx sequelize-cli db:migrate 
 ```
 
-### Serverless plugins
-
-Plugins de serverless utilizados
-
-| Plugin | Stats |
-|:---------------------------|:-----------:|
-| **[Webpack - `serverless-webpack`](https://github.com/serverless-heaven/serverless-webpack)** <br/> Serverless plugin to bundle your lambdas with Webpack | ![Github Stars](https://img.shields.io/github/stars/serverless-heaven/serverless-webpack.svg?label=Stars&style=for-the-badge) <br/> ![NPM Downloads](https://img.shields.io/npm/dt/serverless-webpack.svg?label=Downloads&style=for-the-badge)|
-| **[Offline - `serverless-offline`](https://github.com/dherault/serverless-offline)** <br/> Emulate AWS λ and API Gateway locally when developing your Serverless project | ![Github Stars](https://img.shields.io/github/stars/dherault/serverless-offline.svg?label=Stars&style=for-the-badge) <br/> ![NPM Downloads](https://img.shields.io/npm/dt/serverless-offline.svg?label=Downloads&style=for-the-badge)|
-
 ### Resources
-Los recursos implementados son los siguientes:
+Los endpoints desarrollados
 
 - films
 - people
 
-| resource      | description                       |
-|:--------------|:----------------------------------|
+
 | `api/films`      | Listado de peliculas. |
 | `api/people`    | A People resource is an individual person or character within the Star Wars universe. |
 
-You can operate on resources using HTTP methods such as `POST`, `GET`, `PUT`, and `DELETE`.
+metodos desarrollados en ambos endpoints: `POST`, `GET`, `PUT`, and `DELETE`.
 
 #### Relational Model
 
 La estructura de los recursos de [`SWAPI`](https://swapi.py4e.com/documentation), resulta ser más cercana a un modelo `NoSQL` que a uno relacional. Dado que la base de datos a utilizar es **mysql**, se normalizaron las entidades y sus relaciones. Sin embargo, esto no es transparente para un cliente que consuma el API, pues, se mantiene la estructura mostrada en [`SWAPI`](https://swapi.py4e.com/documentation), pero, solo a nivel de presentación.
 
 Podemos agregar personas`(People)` al crear un recurso `Films`, especificando los **ids** o el **id** de persona(s) `(People)` existente. Esto para todos los hijos de Films `['people', 'planet', 'specie', 'starship', 'vehicle']`
+
+Prueba para subir data en postman u otra herramienta
 
 ```bash
 curl -X POST http://localhost:8082/development/api/films \
@@ -124,9 +114,6 @@ http://localhost:8082/development/api/films?lang=es
 | `api/people`           | Create new pers  | List pers | Error                  | Error              |
 | `api/people/{id}`      | Error            | Get pers  | Update pers if exists| Delete people      |
 
-### Implementation Details
-
-El patrón de software utilizado es `Repository Pattern`. En la capa de persistencia de datos se utilizó *sequelize*. Se implemento una pequeña libreria para el manejo web `(Request.js, Response.js, Middleware.js)`, ubicados en *helpers*. Estas clases abstraen el manejo web (`events` de AWS Lambda) para volverlo lo más parecido a frameworks como **express.js**.
 
 ### Start Project 
 
@@ -148,4 +135,4 @@ Para generar los archivos *CloudFormation* ejecute:
 npm run artifacts
 ```
 
-Configurando adecuadamente las AWS Credentials, el comando `sls deploy` debería desplegar las API's correctamente.
+Si se desea desplegar la API, configurar en terminal los accesos de AWS adecuadamente, y luego ejecutar el comando `sls deploy`
